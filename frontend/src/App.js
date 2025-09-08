@@ -1,23 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import "./App.css";
+import MedicationList from "./components/MedicationList";
+import MedicationForm from "./components/MedicationForm";
+import { getMedications, addMedication, deleteMedication } from "./api";
 
 function App() {
+  const [medications, setMedications] = useState([]);
+
+  // Fetch medications on component mount
+  useEffect(() => {
+    const fetchMeds = async () => {
+      const data = await getMedications();
+      setMedications(data);
+    };
+    fetchMeds();
+  }, []);
+
+  // Add a new medication
+  const handleAdd = async (med) => {
+    const newMed = await addMedication(med);
+    setMedications([...medications, newMed]);
+  };
+
+  // Delete a medication
+  const handleDelete = async (id) => {
+    await deleteMedication(id);
+    setMedications(medications.filter((m) => m.id !== id));
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>PillPal</h1>
+      <MedicationForm onAdd={handleAdd} />
+      <MedicationList medications={medications} onDelete={handleDelete} />
     </div>
   );
 }
