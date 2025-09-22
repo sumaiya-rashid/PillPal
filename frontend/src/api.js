@@ -1,19 +1,25 @@
-const BASE_URL = "http://127.0.0.1:8000/api/";
+const API_URL = "http://10.201.151.125:8000";  // Django backend host:port
 
-export const getMedications = async () => {
-  const res = await fetch(BASE_URL + "medications/");
-  return await res.json();
-};
+export async function getMedications() {
+  const response = await fetch(`${API_URL}/medications/`);
+  if (!response.ok) throw new Error("Failed to fetch medications");
+  return response.json();
+}
 
-export const addMedication = async (med) => {
-  const res = await fetch(BASE_URL + "medications/", {
+export async function addMedication(med) {
+  const response = await fetch(`${API_URL}/medications/`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(med)
+    body: JSON.stringify(med),
   });
-  return await res.json();
-};
+  if (!response.ok) throw new Error("Failed to add medication");
+  return response.json();
+}
 
-export const deleteMedication = async (id) => {
-  await fetch(BASE_URL + `medications/${id}/`, { method: "DELETE" });
-};
+export async function deleteMedication(id) {
+  const response = await fetch(`${API_URL}/medications/${id}/`, {
+    method: "DELETE",
+  });
+  if (!response.ok) throw new Error("Failed to delete medication");
+  return response.json();
+}

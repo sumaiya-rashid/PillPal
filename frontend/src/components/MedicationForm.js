@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./MedicationForm.css";
 
 function MedicationForm({ onAdd }) {
   const [name, setName] = useState("");
@@ -13,7 +14,7 @@ function MedicationForm({ onAdd }) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="form" onSubmit={handleSubmit}>
       <input
         type="text"
         placeholder="Medication Name"
@@ -26,7 +27,7 @@ function MedicationForm({ onAdd }) {
         value={dosage}
         onChange={(e) => setDosage(e.target.value)}
       />
-      <button type="submit">Add Medication</button>
+      <button type="submit">Add</button>
     </form>
   );
 }
